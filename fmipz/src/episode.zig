@@ -7,6 +7,8 @@ comptime {
 }
 
 pub fn Single(comptime SeriesFmt: type) type {
+    fmipz.typecheckSeriesFormats(SeriesFmt);
+
     return struct {
         const Self = @This();
 
