@@ -76,7 +76,7 @@ fn ParserResult(comptime P: type) type {
 
 /// Backtrack to the start of the given parser if it fails.
 ///
-/// This is useful as a wrapper for the `mecha.combinator` combinator, since
+/// This is useful as a wrapper for the `mecha.combine` parser, since
 /// it advances the input string if any of its provided parsers fail.
 pub fn errBacktrack(comptime parser: anytype) mecha.Parser(ParserResult(@TypeOf(parser))) {
     const Res = mecha.Result(ParserResult(@TypeOf(parser)));
