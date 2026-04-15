@@ -1,10 +1,13 @@
 const std = @import("std");
 const mecha = @import("mecha");
 const parse = @import("parse.zig");
+const fmipz = @import("fmipz.zig");
 
 comptime {
     std.testing.refAllDecls(@This());
 }
+
+const ParseError = fmipz.ParseError;
 
 pub fn Single(comptime SeriesFmt: type) type {
     fmipz.typecheckSeriesFormats(SeriesFmt);

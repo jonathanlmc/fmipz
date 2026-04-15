@@ -2,10 +2,15 @@ pub const episode = @import("episode.zig");
 pub const parse = @import("parse.zig");
 
 const std = @import("std");
+const mecha = @import("mecha");
 
 comptime {
     std.testing.refAllDecls(@This());
 }
+
+pub const ParseError = error{
+    Unmatched,
+} || mecha.Error;
 
 pub fn Series(comptime Formats: type) type {
     typecheckSeriesFormats(Formats);
