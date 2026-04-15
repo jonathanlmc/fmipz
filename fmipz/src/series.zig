@@ -4,6 +4,13 @@ const parse = fmipz.parse;
 
 const ParseError = fmipz.ParseError;
 
+/// A single media series.
+///
+/// `SeriesFmt` defines the various formats (such as a TV show or special) that
+/// this series and its child episodes will use during parsing to provide more
+/// data on what format the series / specific episode belongs to. If this functionality
+/// is not needed then `void` can be used for its type, otherwise an `enum` should be
+/// provided with case-insensitive variants.
 pub fn Single(comptime SeriesFmt: type) type {
     fmipz.typecheckSeriesFormats(SeriesFmt);
 
@@ -13,8 +20,21 @@ pub fn Single(comptime SeriesFmt: type) type {
         pub const Format = SeriesFmt;
         pub const Episode = fmipz.episode.Single(Self.Format);
 
+        /// A slice of the provided filename that _should_ contain a cleaned
+        /// version of the series name.
+        ///
+        /// Currently, cleaning the name just involves stripping out any supported
+        /// tags (bracket or parenthesis based, and resolution tags) and season markers.
         trimmed_name: []const u8,
 
+        /// Attempt to extract basic series information from a given filename.
+        ///
+        /// This is intended (but not required) to be used on directories.
+        ///
+        /// This does not currently do much beyond attempting to obtain a
+        /// series name that has been trimmed / cleaned of noise. To obtain
+        /// more detailed data such as season numbers, parsing individual episode
+        /// files with this struct's `Episode.fromFilename` function can be used.
         pub fn fromFilename(filename: []const u8) ParseError!Self {
             if (filename.len == 0) return ParseError.Unmatched;
 

@@ -1,3 +1,10 @@
+//! Parsers that look for episode and season numbers that are explicitly marked.
+//!
+//! For example:
+//!
+//! * `Title - S01E02`
+//! * `Title - Episode 1`
+
 const std = @import("std");
 const mecha = @import("mecha");
 const mecha_ext = @import("mecha_ext");

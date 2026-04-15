@@ -1,3 +1,12 @@
+//! Parsers that look for episode numbers that are not explicitly marked in the
+//! filename and do not follow any conventions.
+//!
+//! For example:
+//!
+//! * `01`
+//! * `Title 02`
+//! * `03 Series Title`
+
 const std = @import("std");
 const mecha = @import("mecha");
 const mecha_ext = @import("mecha_ext");

@@ -1,3 +1,11 @@
+//! Low-level `mecha` parsers used to parse series and episode information
+//! internally by the higher-level `Series` and `Episode` API.
+//!
+//! This is exported publicly so the parsers can be used as building blocks
+//! for custom series / episode filename formats not supported out-of-the-box,
+//! but please keep in mind that they are still treated as an internal-only API
+//! and may be changed or removed at-will.
+
 pub const episode = @import("parse/episode.zig");
 pub const series = @import("parse/series.zig");
 

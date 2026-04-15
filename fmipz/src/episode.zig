@@ -9,6 +9,13 @@ comptime {
 
 const ParseError = fmipz.ParseError;
 
+/// A single media episode.
+///
+/// `SeriesFmt` defines the various formats (such as a TV show or special) that
+/// this episode will use during parsing to provide more data on what format the
+/// episode belongs to. If this functionality is not needed then `void` can be
+/// used for its type, otherwise an `enum` should be provided with
+/// case-insensitive variants.
 pub fn Single(comptime SeriesFmt: type) type {
     fmipz.typecheckSeriesFormats(SeriesFmt);
 

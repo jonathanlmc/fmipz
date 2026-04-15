@@ -30,6 +30,7 @@ pub const parsed_filename = blk: {
     });
 };
 
+// todo: support ranges (ex. `S01-04` and `S01-S04`)
 const season_label = errBacktrack(mecha.combine(.{
     parse.any_whitespace.discard(),
     mecha.utf8.char('S').discard(),
