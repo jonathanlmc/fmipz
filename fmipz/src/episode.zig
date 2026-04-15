@@ -48,12 +48,10 @@ pub fn Single(comptime SeriesFmt: type) type {
                 break :blk fba.allocator();
             };
 
-            const parsed_result = try mecha.oneOf(.{
-                // look for an explicit marker first before falling back to an implicit one
-                // to help avoid false positive matches
-                parse.episode.explicit.parsedFilename(SeriesFmt),
-                parse.episode.implicit.parsedFilename(SeriesFmt),
-            }).parse(alloc, filename_stem);
+            const parsed_result = try parse
+                .episode
+                .parsedFilename(SeriesFmt)
+                .parse(alloc, filename_stem);
 
             const format = blk: {
                 switch (parsed_result.value) {

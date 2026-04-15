@@ -24,6 +24,15 @@ pub fn Parsed(comptime SeriesFormat: type) type {
     };
 }
 
+pub fn parsedFilename(comptime SeriesFmt: type) mecha.Parser(Parsed(SeriesFmt)) {
+    return mecha.oneOf(.{
+        // look for an explicit marker first before falling back to an implicit one
+        // to help avoid false positive matches
+        parse.episode.explicit.parsedFilename(SeriesFmt),
+        parse.episode.implicit.parsedFilename(SeriesFmt),
+    });
+}
+
 pub fn anyBareSeriesFormat(comptime SeriesFmt: type) mecha.Parser(SeriesFmt) {
     return comptime blk: {
         if (@typeInfo(SeriesFmt) == .void) return mecha_ext.err(SeriesFmt);
