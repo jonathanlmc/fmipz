@@ -38,8 +38,4 @@ pub fn build(b: *std.Build) void {
 
     test_step.dependOn(&run_fmipz_tests.step);
     test_step.dependOn(&run_mecha_ext_tests.step);
-
-    // ensure the `options` module always exists
-    const options = b.addOptions();
-    fmipz_mod.addOptions("options", options);
 }
