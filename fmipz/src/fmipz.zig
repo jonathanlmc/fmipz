@@ -1,5 +1,9 @@
 pub const episode = @import("episode.zig");
 pub const parse = @import("parse.zig");
+pub const series = @import("series.zig");
+
+pub const Episode = episode.Single;
+pub const Series = series.Single;
 
 const std = @import("std");
 const mecha = @import("mecha");
@@ -12,24 +16,8 @@ pub const ParseError = error{
     Unmatched,
 } || mecha.Error;
 
-pub fn Series(comptime Formats: type) type {
-    typecheckSeriesFormats(Formats);
-
-    return struct {
-        const Self = @This();
-
-        pub const Format = Formats;
-        pub const Episode = episode.Single(Self.Format);
-
-        pub fn fromFilename(filename: []const u8) Self {
-            _ = filename;
-            return .{};
-        }
-    };
-}
-
-pub fn typecheckSeriesFormats(comptime Format: type) void {
-    switch (@typeInfo(Format)) {
+pub fn typecheckSeriesFormats(comptime SeriesFmt: type) void {
+    switch (@typeInfo(SeriesFmt)) {
         .@"enum", .void => {},
         else => @compileError("series format type must be an enum or void"),
     }

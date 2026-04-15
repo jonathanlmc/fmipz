@@ -24,10 +24,6 @@ pub fn Single(comptime SeriesFmt: type) type {
         /// based off the filename.
         format: ?SeriesFmt,
 
-        pub const ParseError = error{
-            Unmatched,
-        } || mecha.Error;
-
         /// Attempt to extract episode and/or series information from a given filename stem.
         ///
         /// The provided filename **must** have its extension stripped with a function like
