@@ -195,7 +195,7 @@ const FilenameTestImpl = union(enum) {
     }
 };
 
-test "fromFilenameStem: episode marker only" {
+test "Single.fromFilenameStem: episode marker only" {
     inline for (FilenameTestImpl.impls) |impl| {
         try impl.okNum("Series Title - 12", 12);
         try impl.okNum("Series Title - E12", 12);
@@ -245,7 +245,7 @@ test "fromFilenameStem: episode marker only" {
     }
 }
 
-test "fromFilenameStem: season hint and episode marker" {
+test "Single.fromFilenameStem: season hint and episode marker" {
     inline for (FilenameTestImpl.impls) |impl| {
         try impl.okNumAndSeason("Series Title - S01E02", 2, 1);
         try impl.okNumAndSeason("Series Title - S01E02 [Tag 1]", 2, 1);
@@ -267,7 +267,7 @@ test "fromFilenameStem: season hint and episode marker" {
     }
 }
 
-test "fromFilenameStem: episode with format hint" {
+test "Single.fromFilenameStem: episode with format hint" {
     const fmt_impl: FilenameTestImpl = .{ .basic_fmts = .{} };
 
     try fmt_impl.okNumSeasonAndFmt("Series Title TV - 12", 12, null, .tv);
@@ -306,7 +306,7 @@ test "fromFilenameStem: episode with format hint" {
     try no_fmt_impl.unmatched("Series Title - S01TV02");
 }
 
-test "fromFilenameStem: one off episode" {
+test "Single.fromFilenameStem: one off episode" {
     const fmt_impl: FilenameTestImpl = .{ .basic_fmts = .{} };
 
     try fmt_impl.okNumSeasonAndFmt("Series Title - TV", 1, null, .tv);
