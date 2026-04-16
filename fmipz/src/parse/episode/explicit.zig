@@ -10,7 +10,6 @@ const mecha = @import("mecha");
 const mecha_ext = @import("mecha_ext");
 const episode = @import("../episode.zig");
 const parse = @import("../../parse.zig");
-const root = @import("root");
 
 const errBacktrack = mecha_ext.errBacktrack;
 
