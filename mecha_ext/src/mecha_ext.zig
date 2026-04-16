@@ -19,7 +19,7 @@ pub const SkipTillOutput = enum {
 
 /// Skip input one byte at a time until `parser` succeeds.
 ///
-/// No input will be consumed if the `parser` fails.
+/// No input will be consumed if the parser never succeeds.
 pub fn skipTill(
     comptime parser: anytype,
     comptime output: SkipTillOutput,
