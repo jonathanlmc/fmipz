@@ -35,7 +35,7 @@ For files that contain episode information, such as `[Tag] Series Name - S01E01.
 
 | Data          | Description | Optional |
 | ------------- | ------------- | -- |
-| Episode number  | This can either appear explicitly (i.e. marked with something like `E01` or `Episode 01`) or implicitly (i.e. arbitrarily in the filename, such as `Series Name 01.mp4`). | No |
+| Episode number  | This can either appear explicitly (i.e. marked with something like `E01` or `Episode 01`) or implicitly (i.e. arbitrarily in the filename, such as `Series Name 01.mp4`). A filename without an episode number can still be successfully parsed with a returned episode number of 1 if the filename contains a series format identifier that was provided to the episode parser (see below for more details). | No |
 | Season number | Must appear explicitly (i.e. as `S01` or `Season 01`). | Yes |
 | Series format | Only parsed if the episode parser was created with an `enum` describing which formats to look for. This can be used to help identify if an episode belongs to a specific format of a series (such as a TV season or movie). This is not inferred from the presence of a season number since some media like anime can have multiple seasons of a show for specific formats (such as multiple special or OVA seasons). | Yes |
 
