@@ -10,8 +10,6 @@ const fmipz = @import("../fmipz.zig");
 const Allocator = std.mem.Allocator;
 const errBacktrack = mecha_ext.errBacktrack;
 
-const episode = @This();
-
 comptime {
     std.testing.refAllDecls(@This());
 }
@@ -57,7 +55,7 @@ pub fn completeSeriesFormatLabel(comptime SeriesFmt: type) mecha.Parser(SeriesFm
             anySeriesFormatInTag(SeriesFmt),
             anyBareSeriesFormat(SeriesFmt),
         }),
-        episode.file_version.opt().discard(),
+        file_version.opt().discard(),
     }));
 }
 
@@ -66,9 +64,9 @@ pub fn isolatedSeriesFormatLabel(comptime SeriesFmt: type) mecha.Parser(SeriesFm
 
     return mecha_ext.skipTill(
         mecha.combine(.{
-            mecha.oneOf(.{ episode.separator, parse.any_whitespace }),
+            mecha.oneOf(.{ separator, parse.any_whitespace }),
             completeSeriesFormatLabel(SeriesFmt),
-            mecha.oneOf(.{ episode.separator, episode.rest_of_filename_tags_only }),
+            mecha.oneOf(.{ separator, rest_of_filename_tags_only }),
         }),
         .parser,
     );
