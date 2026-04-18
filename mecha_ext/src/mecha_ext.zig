@@ -74,25 +74,6 @@ fn ParserResult(comptime P: type) type {
     };
 }
 
-/// Backtrack to the start of the given parser if it fails.
-///
-/// This is useful as a wrapper for the `mecha.combine` parser, since
-/// it advances the input string if any of its provided parsers fail.
-pub fn errBacktrack(comptime parser: anytype) mecha.Parser(ParserResult(@TypeOf(parser))) {
-    const Res = mecha.Result(ParserResult(@TypeOf(parser)));
-
-    return .{ .parse = struct {
-        fn parse(alloc: Allocator, str: []const u8) mecha.Error!Res {
-            const res = try parser.parse(alloc, str);
-
-            return switch (res.value) {
-                .ok => |value| Res.ok(res.index, value),
-                .err => Res.err(0),
-            };
-        }
-    }.parse };
-}
-
 /// Match an exact string, ignoring ASCII casing.
 pub fn stringIgnoreCase(comptime str: []const u8) mecha.Parser([]const u8) {
     const Res = mecha.Result([]const u8);

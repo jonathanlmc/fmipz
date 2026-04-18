@@ -11,8 +11,6 @@ const mecha_ext = @import("mecha_ext");
 const episode = @import("../episode.zig");
 const parse = @import("../../parse.zig");
 
-const errBacktrack = mecha_ext.errBacktrack;
-
 comptime {
     std.testing.refAllDecls(@This());
 }
@@ -67,16 +65,16 @@ pub fn seasonFollowedByEpisode(comptime SeriesFmt: type) mecha.Parser(
     }.map);
 }
 
-const season_marker: mecha.Parser(u16) = errBacktrack(mecha.combine(.{
+const season_marker: mecha.Parser(u16) = mecha.combine(.{
     mecha.oneOf(.{
-        errBacktrack(mecha.combine(.{
+        mecha.combine(.{
             mecha_ext.stringIgnoreCase("season"),
             parse.any_whitespace,
-        })).discard(),
+        }).discard(),
         mecha_ext.charIgnoreCase('s').discard(),
     }),
     mecha.int(u16, .{ .parse_sign = false }),
-}));
+});
 
 pub fn episodeHeader(comptime SeriesFmt: type) mecha.Parser(?SeriesFmt) {
     return mecha.oneOf(.{
@@ -103,9 +101,9 @@ pub fn EpisodeNumMarker(comptime SeriesFmt: type) type {
 pub fn episodeNumMarker(comptime SeriesFmt: type) mecha.Parser(
     EpisodeNumMarker(SeriesFmt),
 ) {
-    return errBacktrack(mecha.combine(.{
+    return mecha.combine(.{
         episodeHeader(SeriesFmt),
         episode.separator.opt().discard(),
         episode.parsed_number,
-    })).map(mecha.toStruct(EpisodeNumMarker(SeriesFmt)));
+    }).map(mecha.toStruct(EpisodeNumMarker(SeriesFmt)));
 }

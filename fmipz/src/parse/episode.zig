@@ -8,7 +8,6 @@ const parse = @import("../parse.zig");
 const fmipz = @import("../fmipz.zig");
 
 const Allocator = std.mem.Allocator;
-const errBacktrack = mecha_ext.errBacktrack;
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -50,13 +49,13 @@ pub fn anyBareSeriesFormat(comptime SeriesFmt: type) mecha.Parser(SeriesFmt) {
 pub fn completeSeriesFormatLabel(comptime SeriesFmt: type) mecha.Parser(SeriesFmt) {
     if (@typeInfo(SeriesFmt) == .void) return mecha_ext.err(SeriesFmt);
 
-    return errBacktrack(mecha.combine(.{
+    return mecha.combine(.{
         mecha.oneOf(.{
             anySeriesFormatInTag(SeriesFmt),
             anyBareSeriesFormat(SeriesFmt),
         }),
         file_version.opt().discard(),
-    }));
+    });
 }
 
 pub fn isolatedSeriesFormatLabel(comptime SeriesFmt: type) mecha.Parser(SeriesFmt) {
@@ -92,20 +91,20 @@ pub fn anySeriesFormatInTag(comptime SeriesFmt: type) mecha.Parser(SeriesFmt) {
 
 pub const parsed_number = mecha.int(u32, .{ .parse_sign = false });
 
-pub const separator = errBacktrack(mecha.combine(.{
+pub const separator = mecha.combine(.{
     parse.maybe_whitespace,
     mecha.utf8.char('-'),
     parse.maybe_whitespace,
-})).discard();
+}).discard();
 
-pub const file_version: mecha.Parser(void) = errBacktrack(mecha.combine(.{
+pub const file_version: mecha.Parser(void) = mecha.combine(.{
     mecha_ext.charIgnoreCase('v'),
     mecha.intToken(.{ .parse_sign = false }),
-})).discard();
+}).discard();
 
-pub const rest_of_filename_tags_only = errBacktrack(mecha.combine(.{
+pub const rest_of_filename_tags_only = mecha.combine(.{
     mecha.combine(.{ separator, parse.any_whitespace }).opt(),
     mecha.many(parse.any_tag_with_whitespace, .{ .collect = false }),
     parse.maybe_whitespace,
     mecha.eos,
-}).discard());
+}).discard();

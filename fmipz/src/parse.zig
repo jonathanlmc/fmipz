@@ -20,7 +20,7 @@ comptime {
 }
 
 pub fn tag(comptime open_char: u8, comptime close_char: u8) mecha.Parser([]const u8) {
-    return mecha_ext.errBacktrack(mecha.combine(.{
+    return mecha.combine(.{
         mecha.ascii.char(open_char).discard(),
         // note that this does not handle nested tags (such as "((value))")
         mecha.many(mecha.utf8.not(mecha.ascii.char(close_char)), .{
@@ -28,7 +28,7 @@ pub fn tag(comptime open_char: u8, comptime close_char: u8) mecha.Parser([]const
             .min = 1,
         }),
         mecha.ascii.char(close_char).discard(),
-    }));
+    });
 }
 
 pub const parens_tag = tag('(', ')');
@@ -48,11 +48,11 @@ pub const any_tag = mecha.oneOf(.{
     mecha.oneOf(resolution_tags),
 });
 
-pub const any_tag_with_whitespace = mecha_ext.errBacktrack(mecha.combine(.{
+pub const any_tag_with_whitespace = mecha.combine(.{
     maybe_whitespace,
     any_tag,
     maybe_whitespace,
-}));
+});
 
 pub const many_tags_with_whitespace: mecha.Parser(void) = mecha.many(
     any_tag_with_whitespace,

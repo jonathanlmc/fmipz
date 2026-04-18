@@ -4,7 +4,6 @@ const mecha_ext = @import("mecha_ext");
 const parse = @import("../parse.zig");
 
 const Allocator = std.mem.Allocator;
-const errBacktrack = mecha_ext.errBacktrack;
 
 comptime {
     std.testing.refAllDecls(@This());
@@ -31,9 +30,9 @@ pub const parsed_filename = blk: {
 };
 
 // todo: support ranges (ex. `S01-04` and `S01-S04`)
-const season_label = errBacktrack(mecha.combine(.{
+const season_label = mecha.combine(.{
     parse.any_whitespace.discard(),
     mecha.utf8.char('S').discard(),
     mecha.intToken(.{ .parse_sign = false }),
     mecha.oneOf(.{ parse.any_whitespace, mecha.eos }).discard(),
-}));
+});

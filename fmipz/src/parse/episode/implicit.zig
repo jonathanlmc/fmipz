@@ -13,8 +13,6 @@ const mecha_ext = @import("mecha_ext");
 const parse = @import("../../parse.zig");
 const episode = @import("../episode.zig");
 
-const errBacktrack = mecha_ext.errBacktrack;
-
 comptime {
     std.testing.refAllDecls(@This());
 }
@@ -22,14 +20,14 @@ comptime {
 pub fn parsedFilename(comptime SeriesFmt: type) mecha.Parser(
     episode.Parsed(SeriesFmt),
 ) {
-    return errBacktrack(mecha.combine(.{
+    return mecha.combine(.{
         parse.many_tags_with_whitespace,
         mecha.oneOf(.{
             episode_in_middle_of_filename,
             episode_number_only,
             episode_number_at_start,
         }),
-    })).map(struct {
+    }).map(struct {
         fn conv(number: u32) episode.Parsed(SeriesFmt) {
             return .{
                 .number = number,
@@ -68,12 +66,12 @@ pub const episode_in_middle_of_filename: mecha.Parser(u32) = blk: {
     );
 };
 
-pub const episode_number_only: mecha.Parser(u32) = errBacktrack(mecha.combine(.{
+pub const episode_number_only: mecha.Parser(u32) = mecha.combine(.{
     episode.parsed_number,
     episode.rest_of_filename_tags_only,
-}));
+});
 
-pub const episode_number_at_start: mecha.Parser(u32) = errBacktrack(mecha.combine(.{
+pub const episode_number_at_start: mecha.Parser(u32) = mecha.combine(.{
     episode.parsed_number,
     // version string
     mecha.oneOf(.{mecha.combine(.{
@@ -83,9 +81,9 @@ pub const episode_number_at_start: mecha.Parser(u32) = errBacktrack(mecha.combin
     // require the separator, since this can be too ambiguous with
     // a series title otherwise
     episode.separator,
-}));
+});
 
-pub const episode_number: mecha.Parser(u32) = errBacktrack(mecha.combine(.{
+pub const episode_number: mecha.Parser(u32) = mecha.combine(.{
     mecha.oneOf(.{ parse.any_whitespace, episode.separator }),
     episode.parsed_number,
     // if there's more digits that follow closely after this set,
@@ -96,4 +94,4 @@ pub const episode_number: mecha.Parser(u32) = errBacktrack(mecha.combine(.{
         mecha.oneOf(.{ parse.any_whitespace, episode.separator }),
         mecha.intToken(.{ .parse_sign = false }),
     })),
-}));
+});
